@@ -119,7 +119,7 @@
         const result = localStorage.getItem("mbtiResult");
         const container = document.getElementById("recommendationContent");
         document.getElementById("displayType").innerText = result;
-        const API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://localhost:5500" : "https://mbti-backend-main.up.railway.app";
+        const API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://localhost:5500" : "mbti-backend-main-production.up.railway.app";
 
         if (!result) {
             container.innerHTML = '<p style="text-align:center; color:#fff;">Data corrupted. Please retake assessment.</p>';
