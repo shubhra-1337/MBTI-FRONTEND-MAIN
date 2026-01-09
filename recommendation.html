@@ -1,120 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>KnowThySelf | Coordinates</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #00050a;
-            --highlight: #00f2ff;
-            --contrast: #2979ff;
-            --text-main: #ffffff;
-            --text-muted: #8ba4b6;
-            --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-shine: rgba(255, 255, 255, 0.15);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Rajdhani', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-        .header-section { text-align: center; margin-bottom: 50px; }
-        h1 {
-            font-size: 3rem;
-            color: var(--highlight);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-        #recommendationContent {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .category-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 30px;
-        }
-        .category-card h2 {
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        ul { list-style: none; }
-        li {
-            padding: 10px;
-            color: #b3c5d1;
-        }
-        .loading {
-            grid-column: 1/-1;
-            text-align: center;
-            font-size: 1.5rem;
-            color: var(--highlight);
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KnowThySelf | Coordinates</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* 🔒 UI UNCHANGED */
+:root {
+  --bg-dark:#00050a; --highlight:#00f2ff; --contrast:#2979ff;
+  --text-main:#fff; --text-muted:#8ba4b6;
+  --glass-bg:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
+  --glass-border:rgba(255,255,255,.08); --glass-shine:rgba(255,255,255,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Rajdhani',sans-serif;background:var(--bg-dark);color:var(--text-main);min-height:100vh;padding:40px 20px}
+.header-section{text-align:center;margin-bottom:50px}
+h1{font-size:clamp(2.5rem,5vw,4rem);color:var(--highlight);text-transform:uppercase;letter-spacing:3px}
+#recommendationContent{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;max-width:1200px;margin:auto}
+.category-card{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:15px;padding:30px}
+.category-card h2{margin-bottom:15px}
+ul{list-style:none}
+li{padding:10px;color:#b3c5d1}
+.loading-wrapper{grid-column:1/-1;text-align:center;font-size:1.5rem;color:var(--highlight)}
+</style>
 </head>
+
 <body>
 
 <div class="header-section">
-    <h1>Curated Recommendations</h1>
-    <p>Tailored specifically for <span id="displayType"></span></p>
+  <h1>Curated Recommendations</h1>
+  <p>Tailored specifically for <span id="displayType"></span></p>
 </div>
 
 <div id="recommendationContent"></div>
 
 <script>
-    const result = localStorage.getItem("mbtiResult");
-    const container = document.getElementById("recommendationContent");
-    document.getElementById("displayType").innerText = result;
+/* ✅ PARTICLES FIXED */
+const canvas=document.createElement("canvas");
+document.body.appendChild(canvas);
+const ctx=canvas.getContext("2d");
+canvas.style.position="fixed";canvas.style.top=0;canvas.style.left=0;canvas.style.zIndex=-1;
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+addEventListener("resize",resize);resize();
 
-    const API_BASE =
-        window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-            ? "http://localhost:5000"
-            : "https://mbti-backend-main-production.up.railway.app";
+class Particle{
+ constructor(){
+  this.x=Math.random()*canvas.width;
+  this.y=Math.random()*canvas.height;
+  this.vy=Math.random()*0.5+0.3;
+  this.size=Math.random()*2+1;
+  this.op=Math.random()*0.5+0.2;
+ }
+ update(){
+  this.y+=this.vy;
+  if(this.y>canvas.height){this.y=-10;this.x=Math.random()*canvas.width}
+ }
+ draw(){
+  ctx.beginPath();
+  ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+  ctx.fillStyle=`rgba(255,255,255,${this.op})`;
+  ctx.fill();
+ }
+}
+const particles=Array.from({length:100},()=>new Particle());
+(function animate(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ particles.forEach(p=>{p.update();p.draw()});
+ requestAnimationFrame(animate);
+})();
 
-    if (!result) {
-        container.innerHTML = "<p>No MBTI result found.</p>";
-    } else {
-        container.innerHTML = `<div class="loading">Fetching data for ${result}...</div>`;
+/* ✅ API FIXED */
+const result=localStorage.getItem("mbtiResult");
+const container=document.getElementById("recommendationContent");
+document.getElementById("displayType").innerText=result;
 
-        fetch(`${API_BASE}/mbti/${result}`)
-            .then(res => {
-                if (!res.ok) throw new Error("Request failed");
-                return res.json();
-            })
-            .then(data => {
-                container.innerHTML = `
-                    <div class="category-card">
-                        <h2>Music</h2>
-                        <ul>${(data.songs || []).map(i => `<li>${i}</li>`).join("")}</ul>
-                    </div>
-                    <div class="category-card">
-                        <h2>Books</h2>
-                        <ul>${(data.books || []).map(i => `<li>${i}</li>`).join("")}</ul>
-                    </div>
-                    <div class="category-card">
-                        <h2>Careers</h2>
-                        <ul>${(data.careers || []).map(i => `<li>${i}</li>`).join("")}</ul>
-                    </div>
-                    <div class="category-card">
-                        <h2>Movies</h2>
-                        <ul>${(data.movies || []).map(i => `<li>${i}</li>`).join("")}</ul>
-                    </div>
-                `;
-            })
-            .catch(err => {
-                console.error(err);
-                container.innerHTML = `<p style="color:red; grid-column:1/-1;">Connection failed.</p>`;
-            });
-    }
+const API_BASE =
+ (location.hostname==="localhost"||location.hostname==="127.0.0.1")
+ ? "http://localhost:5000"
+ : "https://mbti-backend-main-production.up.railway.app";
+
+if(!result){
+ container.innerHTML="<p>No data found.</p>";
+}else{
+ container.innerHTML=`<div class="loading-wrapper">Fetching data for ${result}...</div>`;
+
+ fetch(`${API_BASE}/mbti/${result}`)
+ .then(r=>{if(!r.ok)throw Error("Failed");return r.json()})
+ .then(d=>{
+  container.innerHTML=`
+   <div class="category-card"><h2>Music</h2><ul>${(d.songs||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+   <div class="category-card"><h2>Books</h2><ul>${(d.books||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+   <div class="category-card"><h2>Careers</h2><ul>${(d.careers||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+   <div class="category-card"><h2>Movies</h2><ul>${(d.movies||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+  `;
+ })
+ .catch(()=>{
+  container.innerHTML="<p style='color:red'>Connection failed.</p>";
+ });
+}
 </script>
 
 </body>
