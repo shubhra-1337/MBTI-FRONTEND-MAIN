@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* 🔒 UI UNCHANGED */
 :root {
   --bg-dark:#00050a; --highlight:#00f2ff; --contrast:#2979ff;
   --text-main:#fff; --text-muted:#8ba4b6;
@@ -16,35 +15,72 @@
   --glass-border:rgba(255,255,255,.08); --glass-shine:rgba(255,255,255,.15);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Rajdhani',sans-serif;background:var(--bg-dark);color:var(--text-main);min-height:100vh;padding:40px 20px}
-.header-section{text-align:center;margin-bottom:50px}
-h1{font-size:clamp(2.5rem,5vw,4rem);color:var(--highlight);text-transform:uppercase;letter-spacing:3px}
-#recommendationContent{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;max-width:1200px;margin:auto}
-.category-card{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:15px;padding:30px}
-.category-card h2{margin-bottom:15px}
+body{font-family:'Rajdhani',sans-serif;background:var(--bg-dark);color:var(--text-main);min-height:100vh;padding:40px 20px;position:relative;}
+.header-section{text-align:center;margin-bottom:50px;position:relative;z-index:2;}
+h1{font-size:clamp(2.5rem,5vw,4rem);color:var(--highlight);text-transform:uppercase;letter-spacing:3px;text-shadow:0 0 20px rgba(0,242,255,0.4);}
+#recommendationContent{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;max-width:1200px;margin:auto;position:relative;z-index:2;}
+
+.category-card{
+  background:var(--glass-bg);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--glass-border);
+  border-radius:15px;
+  padding:30px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+.category-card h2{
+  margin-bottom:15px;
+  font-size:1.8rem;
+  text-shadow:0 0 10px rgba(0,242,255,0.3);
+}
 ul{list-style:none}
-li{padding:10px;color:#b3c5d1}
-.loading-wrapper{grid-column:1/-1;text-align:center;font-size:1.5rem;color:var(--highlight)}
+li{
+  padding:12px;
+  color:#b3c5d1;
+  margin-bottom:8px;
+  background:rgba(255,255,255,0.02);
+  border-radius:6px;
+  transition:0.2s;
+}
+li:hover{
+  background:rgba(0,242,255,0.1);
+  color:var(--highlight);
+}
+
+.loading-wrapper{
+  grid-column:1/-1;
+  text-align:center;
+  font-size:1.5rem;
+  color:var(--highlight);
+}
 </style>
 </head>
 
 <body>
 
+<!-- PARTICLE BACKGROUND -->
+<canvas id="particleCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.6;"></canvas>
+
 <div class="header-section">
   <h1>Curated Recommendations</h1>
-  <p>Tailored specifically for <span id="displayType"></span></p>
+  <p style="color:#b3c5d1;font-size:1.3rem;">Tailored specifically for 
+     <span id="displayType" style="color:#00f2ff;font-weight:700;text-shadow:0 0 10px var(--highlight);"></span>
+  </p>
 </div>
 
 <div id="recommendationContent"></div>
 
 <script>
-/* ✅ PARTICLES FIXED */
-const canvas=document.createElement("canvas");
-document.body.appendChild(canvas);
+/* ⭐ PARTICLE FIX */
+const canvas=document.getElementById("particleCanvas");
 const ctx=canvas.getContext("2d");
-canvas.style.position="fixed";canvas.style.top=0;canvas.style.left=0;canvas.style.zIndex=-1;
-function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
-addEventListener("resize",resize);resize();
+
+function resize(){
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+}
+resize();
+addEventListener("resize",resize);
 
 class Particle{
  constructor(){
@@ -56,7 +92,8 @@ class Particle{
  }
  update(){
   this.y+=this.vy;
-  if(this.y>canvas.height){this.y=-10;this.x=Math.random()*canvas.width}
+  this.x+=Math.sin(this.y*0.01)*0.3;
+  if(this.y>canvas.height){this.y=-10;this.x=Math.random()*canvas.width;}
  }
  draw(){
   ctx.beginPath();
@@ -65,23 +102,30 @@ class Particle{
   ctx.fill();
  }
 }
-const particles=Array.from({length:100},()=>new Particle());
+
+let particles=[];
+for(let i=0;i<100;i++)particles.push(new Particle());
+
 (function animate(){
  ctx.clearRect(0,0,canvas.width,canvas.height);
- particles.forEach(p=>{p.update();p.draw()});
+ particles.forEach(p=>{p.update();p.draw();});
  requestAnimationFrame(animate);
 })();
 
-/* ✅ API FIXED */
+/* ⭐ MBTI LOGIC FIXED */
 const result=localStorage.getItem("mbtiResult");
 const container=document.getElementById("recommendationContent");
 document.getElementById("displayType").innerText=result;
 
+/* 
+⭐⭐⭐ IMPORTANT ⭐⭐⭐  
+Railway gives HTTPS.  
+NO port needed, even though server logs show 8080.
+*/
 const API_BASE =
  (location.hostname==="localhost"||location.hostname==="127.0.0.1")
- ? "http://localhost:8080"
- : "https://mbti-backend-main-production.up.railway.app"
- : "mbti-backend-main.netlify.app";
+ ? "http://localhost:5000"
+ : "https://mbti-backend-main-production.up.railway.app";
 
 if(!result){
  container.innerHTML="<p>No data found.</p>";
@@ -89,20 +133,24 @@ if(!result){
  container.innerHTML=`<div class="loading-wrapper">Fetching data for ${result}...</div>`;
 
  fetch(`${API_BASE}/mbti/${result}`)
- .then(r=>{if(!r.ok)throw Error("Failed");return r.json()})
+ .then(r=>{
+   if(!r.ok)throw Error("Failed");
+   return r.json();
+ })
  .then(d=>{
   container.innerHTML=`
-   <div class="category-card"><h2>Music</h2><ul>${(d.songs||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
-   <div class="category-card"><h2>Books</h2><ul>${(d.books||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
-   <div class="category-card"><h2>Careers</h2><ul>${(d.careers||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
-   <div class="category-card"><h2>Movies</h2><ul>${(d.movies||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+   <div class="category-card"><h2>Sonic Resonance (Music)</h2><ul>${(d.songs||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+   <div class="category-card"><h2>Knowledge Archives (Books)</h2><ul>${(d.books||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+   <div class="category-card"><h2>Career Pathways</h2><ul>${(d.careers||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+   <div class="category-card"><h2>Visual Media (Movies)</h2><ul>${(d.movies||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
   `;
  })
  .catch(()=>{
-  container.innerHTML="<p style='color:red'>Connection failed.</p>";
+  container.innerHTML="<p style='color:red;text-align:center;'>⚠ Connection failed. Check backend.</p>";
  });
 }
 </script>
 
 </body>
 </html>
+
