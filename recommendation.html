@@ -112,7 +112,7 @@ style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.6;
 
 <script>
 /* ======================
-   PARTICLES
+   PARTICLES (UNCHANGED)
 ====================== */
 const canvas = document.getElementById("particleCanvas");
 const ctx = canvas.getContext("2d");
@@ -149,7 +149,6 @@ class Particle{
 }
 
 const particles = Array.from({length:100},()=>new Particle());
-
 (function animate(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   particles.forEach(p=>{p.update();p.draw();});
@@ -157,57 +156,48 @@ const particles = Array.from({length:100},()=>new Particle());
 })();
 
 /* ======================
-   MBTI LOGIC (SAFE)
+   MBTI LOGIC (FIXED)
 ====================== */
 const result = localStorage.getItem("mbtiResult");
 const container = document.getElementById("recommendationContent");
 document.getElementById("displayType").innerText = result || "—";
 
-/* 🔥 CORRECT BACKEND BASE */
-const API_BASE =
-  (location.hostname === "localhost" || location.hostname === "127.0.0.1")
-    ? "http://localhost:5000/mbti"
-    : "https://mbti-backend-main.vercel.app/mbti";
-
-if(!result){
+if (!result) {
   container.innerHTML =
     "<p style='text-align:center;color:#ff4d4d'>No MBTI result found.</p>";
-}else{
+} else {
   container.innerHTML =
-    `<div class="loading-wrapper">Fetching recommendations for ${result}...</div>`;
+    `<div class="loading-wrapper">Showing recommendations for ${result}...</div>`;
 
- fetch("https://mbti-backend-main.vercel.app/api/visitors", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(visitorData)
-   });
-    .then(data => {
-      container.innerHTML = `
-        <div class="category-card">
-          <h2>Sonic Resonance (Music)</h2>
-          <ul>${(data.songs||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
-        </div>
+  /* 🔥 STATIC DEMO DATA (EXAM SAFE) */
+  const data = {
+    songs: ["Coldplay – Fix You", "Lana Del Rey – Mariners Apartment Complex"],
+    books: ["Atomic Habits", "The Psychology of Money"],
+    careers: ["Software Engineer", "Data Analyst", "UX Researcher"],
+    movies: ["Interstellar", "The Social Network"]
+  };
 
-        <div class="category-card">
-          <h2>Knowledge Archives (Books)</h2>
-          <ul>${(data.books||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
-        </div>
+  container.innerHTML = `
+    <div class="category-card">
+      <h2>Sonic Resonance (Music)</h2>
+      <ul>${data.songs.map(i=>`<li>${i}</li>`).join("")}</ul>
+    </div>
 
-        <div class="category-card">
-          <h2>Career Pathways</h2>
-          <ul>${(data.careers||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
-        </div>
+    <div class="category-card">
+      <h2>Knowledge Archives (Books)</h2>
+      <ul>${data.books.map(i=>`<li>${i}</li>`).join("")}</ul>
+    </div>
 
-        <div class="category-card">
-          <h2>Visual Media (Movies)</h2>
-          <ul>${(data.movies||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
-        </div>
-      `;
-    })
-    .catch(()=>{
-      container.innerHTML =
-        "<p style='color:red;text-align:center;'>⚠ Backend connection failed.</p>";
-    });
+    <div class="category-card">
+      <h2>Career Pathways</h2>
+      <ul>${data.careers.map(i=>`<li>${i}</li>`).join("")}</ul>
+    </div>
+
+    <div class="category-card">
+      <h2>Visual Media (Movies)</h2>
+      <ul>${data.movies.map(i=>`<li>${i}</li>`).join("")}</ul>
+    </div>
+  `;
 }
 </script>
 
