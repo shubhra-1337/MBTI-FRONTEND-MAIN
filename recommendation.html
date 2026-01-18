@@ -123,9 +123,9 @@ Railway gives HTTPS.
 NO port needed, even though server logs show 8080.
 */
 const API_BASE =
- (location.hostname==="localhost"||location.hostname==="127.0.0.1")
- ? "http://localhost:5000"
- : "https://mbti-backend-main-production.up.railway.app";
+  (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? "http://localhost:5000"
+    : "https://mbti-backend-main.vercel.app";
 
 if(!result){
  container.innerHTML="<p>No data found.</p>";
