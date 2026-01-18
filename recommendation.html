@@ -3,22 +3,55 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>KnowThySelf | Coordinates</title>
+<title>KnowThySelf | Recommendations</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg-dark:#00050a; --highlight:#00f2ff; --contrast:#2979ff;
-  --text-main:#fff; --text-muted:#8ba4b6;
+  --bg-dark:#00050a;
+  --highlight:#00f2ff;
+  --text-main:#ffffff;
+  --text-muted:#8ba4b6;
   --glass-bg:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
-  --glass-border:rgba(255,255,255,.08); --glass-shine:rgba(255,255,255,.15);
+  --glass-border:rgba(255,255,255,.08);
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Rajdhani',sans-serif;background:var(--bg-dark);color:var(--text-main);min-height:100vh;padding:40px 20px;position:relative;}
-.header-section{text-align:center;margin-bottom:50px;position:relative;z-index:2;}
-h1{font-size:clamp(2.5rem,5vw,4rem);color:var(--highlight);text-transform:uppercase;letter-spacing:3px;text-shadow:0 0 20px rgba(0,242,255,0.4);}
-#recommendationContent{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;max-width:1200px;margin:auto;position:relative;z-index:2;}
+
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:var(--bg-dark);
+  color:var(--text-main);
+  min-height:100vh;
+  padding:40px 20px;
+  overflow-x:hidden;
+}
+
+.header-section{
+  text-align:center;
+  margin-bottom:50px;
+  position:relative;
+  z-index:2;
+}
+
+h1{
+  font-size:clamp(2.5rem,5vw,4rem);
+  color:var(--highlight);
+  text-transform:uppercase;
+  letter-spacing:3px;
+  text-shadow:0 0 20px rgba(0,242,255,0.4);
+}
+
+#recommendationContent{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:30px;
+  max-width:1200px;
+  margin:auto;
+  position:relative;
+  z-index:2;
+}
 
 .category-card{
   background:var(--glass-bg);
@@ -26,31 +59,35 @@ h1{font-size:clamp(2.5rem,5vw,4rem);color:var(--highlight);text-transform:upperc
   border:1px solid var(--glass-border);
   border-radius:15px;
   padding:30px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
 }
+
 .category-card h2{
   margin-bottom:15px;
   font-size:1.8rem;
   text-shadow:0 0 10px rgba(0,242,255,0.3);
 }
+
 ul{list-style:none}
+
 li{
   padding:12px;
-  color:#b3c5d1;
   margin-bottom:8px;
   background:rgba(255,255,255,0.02);
   border-radius:6px;
+  color:#b3c5d1;
   transition:0.2s;
 }
+
 li:hover{
-  background:rgba(0,242,255,0.1);
+  background:rgba(0,242,255,0.12);
   color:var(--highlight);
 }
 
 .loading-wrapper{
   grid-column:1/-1;
   text-align:center;
-  font-size:1.5rem;
+  font-size:1.4rem;
   color:var(--highlight);
 }
 </style>
@@ -58,107 +95,121 @@ li:hover{
 
 <body>
 
-<!-- PARTICLE BACKGROUND -->
-<canvas id="particleCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.6;"></canvas>
+<canvas id="particleCanvas"
+style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.6;"></canvas>
 
 <div class="header-section">
   <h1>Curated Recommendations</h1>
-  <p style="color:#b3c5d1;font-size:1.3rem;">Tailored specifically for 
-     <span id="displayType" style="color:#00f2ff;font-weight:700;text-shadow:0 0 10px var(--highlight);"></span>
+  <p style="font-size:1.3rem;color:var(--text-muted)">
+    Tailored specifically for
+    <span id="displayType"
+      style="color:var(--highlight);font-weight:700;text-shadow:0 0 10px var(--highlight);">
+    </span>
   </p>
 </div>
 
 <div id="recommendationContent"></div>
 
 <script>
-/* ⭐ PARTICLES */
-const canvas=document.getElementById("particleCanvas");
-const ctx=canvas.getContext("2d");
+/* ======================
+   PARTICLES
+====================== */
+const canvas = document.getElementById("particleCanvas");
+const ctx = canvas.getContext("2d");
 
 function resize(){
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
 }
 resize();
-addEventListener("resize",resize);
+addEventListener("resize", resize);
 
 class Particle{
- constructor(){
-  this.x=Math.random()*canvas.width;
-  this.y=Math.random()*canvas.height;
-  this.vy=Math.random()*0.5+0.3;
-  this.size=Math.random()*2+1;
-  this.op=Math.random()*0.5+0.2;
- }
- update(){
-  this.y+=this.vy;
-  this.x+=Math.sin(this.y*0.01)*0.3;
-  if(this.y>canvas.height){this.y=-10;this.x=Math.random()*canvas.width;}
- }
- draw(){
-  ctx.beginPath();
-  ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-  ctx.fillStyle=`rgba(255,255,255,${this.op})`;
-  ctx.fill();
- }
+  constructor(){
+    this.x = Math.random()*canvas.width;
+    this.y = Math.random()*canvas.height;
+    this.vy = Math.random()*0.6 + 0.3;
+    this.size = Math.random()*2 + 1;
+    this.op = Math.random()*0.5 + 0.2;
+  }
+  update(){
+    this.y += this.vy;
+    this.x += Math.sin(this.y * 0.01) * 0.3;
+    if(this.y > canvas.height){
+      this.y = -10;
+      this.x = Math.random()*canvas.width;
+    }
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${this.op})`;
+    ctx.fill();
+  }
 }
 
-let particles=[];
-for(let i=0;i<100;i++)particles.push(new Particle());
+const particles = Array.from({length:100},()=>new Particle());
 
 (function animate(){
- ctx.clearRect(0,0,canvas.width,canvas.height);
- particles.forEach(p=>{p.update();p.draw();});
- requestAnimationFrame(animate);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{p.update();p.draw();});
+  requestAnimationFrame(animate);
 })();
 
-/* ⭐ MBTI LOGIC */
-const result=localStorage.getItem("mbtiResult");
-const container=document.getElementById("recommendationContent");
-document.getElementById("displayType").innerText=result;
+/* ======================
+   MBTI LOGIC (SAFE)
+====================== */
+const result = localStorage.getItem("mbtiResult");
+const container = document.getElementById("recommendationContent");
+document.getElementById("displayType").innerText = result || "—";
 
-/* ⭐ BACKEND API – FULLY FIXED */
+/* 🔥 CORRECT BACKEND BASE */
 const API_BASE =
   (location.hostname === "localhost" || location.hostname === "127.0.0.1")
     ? "http://localhost:5000/mbti"
     : "https://mbti-backend-main.vercel.app/mbti";
 
 if(!result){
- container.innerHTML="<p>No data found.</p>";
+  container.innerHTML =
+    "<p style='text-align:center;color:#ff4d4d'>No MBTI result found.</p>";
 }else{
- container.innerHTML=`<div class="loading-wrapper">Fetching data for ${result}...</div>`;
+  container.innerHTML =
+    `<div class="loading-wrapper">Fetching recommendations for ${result}...</div>`;
 
- fetch(`${API_BASE}/${result}`)
- .then(r=>{
-   if(!r.ok)throw Error("Failed");
-   return r.json();
- })
- .then(d=>{
-  container.innerHTML=`
-   <div class="category-card"><h2>Sonic Resonance (Music)</h2>
-     <ul>${(d.songs||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
-   </div>
+  fetch(`${API_BASE}/${result}`)
+    .then(res => {
+      if(!res.ok) throw new Error("Fetch failed");
+      return res.json();
+    })
+    .then(data => {
+      container.innerHTML = `
+        <div class="category-card">
+          <h2>Sonic Resonance (Music)</h2>
+          <ul>${(data.songs||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
+        </div>
 
-   <div class="category-card"><h2>Knowledge Archives (Books)</h2>
-     <ul>${(d.books||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
-   </div>
+        <div class="category-card">
+          <h2>Knowledge Archives (Books)</h2>
+          <ul>${(data.books||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
+        </div>
 
-   <div class="category-card"><h2>Career Pathways</h2>
-     <ul>${(d.careers||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
-   </div>
+        <div class="category-card">
+          <h2>Career Pathways</h2>
+          <ul>${(data.careers||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
+        </div>
 
-   <div class="category-card"><h2>Visual Media (Movies)</h2>
-     <ul>${(d.movies||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
-   </div>
-  `;
- })
- .catch(()=>{
-  container.innerHTML="<p style='color:red;text-align:center;'>⚠ Connection failed. Check backend.</p>";
- });
+        <div class="category-card">
+          <h2>Visual Media (Movies)</h2>
+          <ul>${(data.movies||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
+        </div>
+      `;
+    })
+    .catch(()=>{
+      container.innerHTML =
+        "<p style='color:red;text-align:center;'>⚠ Backend connection failed.</p>";
+    });
 }
 </script>
 
 </body>
 </html>
-
-
