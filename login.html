@@ -292,118 +292,65 @@
       </section>
     </main>
 
-    <script>
-      // particles
-      const canvas = document.getElementById("particleCanvas");
-      const ctx = canvas.getContext("2d");
-      let particles = [];
+<script>
+  const API_BASE =
+    (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+      ? "http://localhost:5000"
+      : "https://mbti-backend-main-e0huu5jib-shubhras-projects-f1117b27.vercel.app";
 
-      function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      window.addEventListener("resize", resize);
-      resize();
+  const form = document.getElementById("visitorForm");
+  const messageBox = document.getElementById("message");
 
-      class Particle {
-        constructor() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
-          this.vy = Math.random() * 0.5 + 0.3;
-          this.size = Math.random() * 2 + 1;
-          this.op = Math.random() * 0.5 + 0.2;
-        }
-        update() {
-          this.y += this.vy;
-          this.x += Math.sin(this.y * 0.01) * 0.3;
-          if (this.y > canvas.height) {
-            this.y = -10;
-            this.x = Math.random() * canvas.width;
-          }
-        }
-        draw() {
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255,255,255,${this.op})`;
-          ctx.fill();
-        }
-      }
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    messageBox.textContent = "";
+    messageBox.className = "msg";
 
-      for (let i = 0; i < 100; i++) particles.push(new Particle());
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const age = document.getElementById("age").value.trim();
 
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach((p) => {
-          p.update();
-          p.draw();
-        });
-        requestAnimationFrame(animate);
-      }
-      animate();
+    if (!name || !email || !age) {
+      messageBox.textContent = "Please fill all details.";
+      messageBox.classList.add("error");
+      return;
+    }
 
-      // backend URL
-      const API_BASE =
-      (location.hostname === "localhost" || location.hostname === "127.0.0.1")
-       ? "http://localhost:5000"
-       : "https://mbti-backend-main-e0huu5jib-shubhras-projects-f1117b27.vercel.app";
+    localStorage.setItem(
+      "mbtiUser",
+      JSON.stringify({ name, email, age: Number(age) })
+    );
 
+    const visitorData = {
+      name,
+      email,
+      age: Number(age),
+      userAgent: navigator.userAgent,
+      platform: navigator.platform,
+    };
 
-      const form = document.getElementById("visitorForm");
-      const messageBox = document.getElementById("message");
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        messageBox.textContent = "";
-        messageBox.className = "msg";
-
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const age = document.getElementById("age").value.trim();
-
-        if (!name || !email || !age) {
-          messageBox.textContent = "Please fill all details.";
-          messageBox.classList.add("error");
-          return;
-        }
-
-        // ✅ store user for later (dashboard/reco optional)
-        localStorage.setItem(
-          "mbtiUser",
-          JSON.stringify({ name, email, age: Number(age) })
-        );
-
-        const visitorData = {
-          name,
-          email,
-          age: Number(age),
-          userAgent: navigator.userAgent,
-          platform: navigator.platform,
-        };
-
-        try {
-          const res = await fetch(`${API_BASE}/api/visitors`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(visitorData),
-          });
-
-          if (!res.ok) throw new Error("Failed to store visitor data");
-
-          messageBox.textContent = "Saved ✅ Redirecting...";
-          messageBox.classList.add("ok");
-
-          document.body.classList.add("fade-out");
-          setTimeout(() => {
-            window.location.href = "test.html";
-          }, 500);
-        } catch (err) {
-          console.error(err);
-          messageBox.textContent =
-            "Backend not running / error storing data. Please try again.";
-          messageBox.classList.add("error");
-        }
+    try {
+      const res = await fetch(`${API_BASE}/api/visitors`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(visitorData),
       });
-    </script>
+
+      if (!res.ok) throw new Error("Failed to store visitor data");
+
+      messageBox.textContent = "Saved ✅ Redirecting...";
+      messageBox.classList.add("ok");
+
+      document.body.classList.add("fade-out");
+      setTimeout(() => (window.location.href = "test.html"), 500);
+    } catch (err) {
+      console.error(err);
+      messageBox.textContent =
+        "Backend not running / error storing data. Please try again.";
+      messageBox.classList.add("error");
+    }
+  });
+</script>
   </body>
 </html>
 
