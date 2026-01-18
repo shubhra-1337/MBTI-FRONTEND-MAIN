@@ -27,11 +27,7 @@
         --glass-shine: rgba(255, 255, 255, 0.15);
       }
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
 
       body {
         font-family: "Rajdhani", sans-serif;
@@ -42,9 +38,7 @@
       }
 
       .animated-bg {
-        position: fixed;
-        inset: 0;
-        z-index: -2;
+        position: fixed; inset: 0; z-index: -2;
         background: radial-gradient(circle at 50% 50%, #051525 0%, #00050a 100%);
         background-size: 200% 200%;
         animation: deepPulse 15s ease infinite alternate;
@@ -56,56 +50,40 @@
       }
 
       #particleCanvas {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        opacity: 0.6;
+        position: fixed; inset: 0; z-index: -1; opacity: 0.6;
       }
 
       header {
-        max-width: 1200px;
-        margin: 0 auto;
+        max-width: 1200px; margin: 0 auto;
         padding: 35px 20px 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        display: flex; justify-content: space-between; align-items: center;
       }
 
       .brand {
-        font-size: 1.3rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
+        font-size: 1.3rem; font-weight: 700;
+        letter-spacing: 2px; text-transform: uppercase;
         color: var(--highlight);
         text-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
       }
 
       .back {
-        color: var(--text-muted);
-        text-decoration: none;
-        font-weight: 700;
-        letter-spacing: 2px;
-        padding: 10px 14px;
-        border-radius: 30px;
+        color: var(--text-muted); text-decoration: none;
+        font-weight: 700; letter-spacing: 2px;
+        padding: 10px 14px; border-radius: 30px;
         border: 1px solid rgba(255, 255, 255, 0.12);
         background: rgba(255, 255, 255, 0.02);
         transition: 0.25s;
       }
-
       .back:hover {
-        color: var(--highlight);
-        border-color: var(--highlight);
+        color: var(--highlight); border-color: var(--highlight);
         box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
       }
 
       .wrap {
-        max-width: 1200px;
-        margin: 0 auto;
+        max-width: 1200px; margin: 0 auto;
         padding: 25px 20px 55px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 25px;
-        align-items: center;
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 25px; align-items: center;
       }
 
       .glass-card {
@@ -122,10 +100,8 @@
       .glass-card::before {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        height: 3px;
-        width: 100%;
+        top: 0; left: 0;
+        height: 3px; width: 100%;
         background: linear-gradient(90deg, transparent, var(--highlight), transparent);
         box-shadow: 0 0 12px var(--highlight);
       }
@@ -140,61 +116,43 @@
       }
 
       .sub {
-        margin-top: 10px;
-        color: #d0dbe6;
-        font-size: 1.15rem;
-        line-height: 1.6;
+        margin-top: 10px; color: #d0dbe6;
+        font-size: 1.15rem; line-height: 1.6;
       }
 
       label {
-        display: block;
-        margin: 12px 0 6px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        font-weight: 700;
-        color: var(--text-muted);
+        display: block; margin: 12px 0 6px;
+        letter-spacing: 1px; text-transform: uppercase;
+        font-weight: 700; color: var(--text-muted);
       }
 
       input {
-        width: 100%;
-        padding: 13px 14px;
+        width: 100%; padding: 13px 14px;
         border-radius: 14px;
         border: 1px solid rgba(255, 255, 255, 0.14);
         background: rgba(0, 0, 0, 0.35);
         color: #fff;
       }
-
       input:focus {
         border-color: var(--highlight);
         box-shadow: 0 0 15px rgba(0, 242, 255, 0.25);
       }
 
       .btn-glow {
-        width: 100%;
-        margin-top: 16px;
-        padding: 15px 18px;
+        width: 100%; margin-top: 16px; padding: 15px 18px;
         background: rgba(0, 242, 255, 0.05);
         border: 1px solid var(--highlight);
-        color: var(--highlight);
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.3s ease;
+        color: var(--highlight); font-weight: 800;
+        text-transform: uppercase; letter-spacing: 3px;
+        border-radius: 12px; cursor: pointer;
+        transition: 0.3s ease;
       }
-
       .btn-glow:hover {
-        background: var(--highlight);
-        color: #000;
+        background: var(--highlight); color: #000;
         box-shadow: 0 0 40px rgba(0, 242, 255, 0.55);
       }
 
-      .msg {
-        margin-top: 12px;
-        font-weight: 700;
-      }
-
+      .msg { margin-top: 12px; font-weight: 700; }
       .error { color: #ff6b6b; }
       .ok { color: #7cffb2; }
 
@@ -214,16 +172,13 @@
     </header>
 
     <main class="wrap">
-      <!-- Left Card -->
       <section class="glass-card">
         <div class="title">Access Portal</div>
         <p class="sub">
-          Enter your details to begin the assessment. Your information is used
-          only to store visitor logs.
+          Enter your details to begin the assessment. Your information is used only to store visitor logs.
         </p>
       </section>
 
-      <!-- Right Card -->
       <section class="glass-card">
         <div class="title" style="font-size: 2.1rem">Login / Register</div>
         <p class="sub">Proceed to MBTI test sequence.</p>
@@ -239,70 +194,62 @@
           <input id="age" type="number" placeholder="Enter your age" required />
 
           <button class="btn-glow" type="submit">Continue →</button>
-
           <div id="message" class="msg"></div>
         </form>
       </section>
     </main>
 
+    <!-- ⭐ SCRIPT FIXED & RESTORED -->
     <script>
-      const API_BASE =
-        (location.hostname === "localhost" || location.hostname === "127.0.0.1")
-          ? "http://localhost:5000"
-          : "https://mbti-backend-main.vercel.app";
+      // particles
+      const canvas = document.getElementById("particleCanvas");
+      const ctx = canvas.getContext("2d");
+      let particles = [];
 
-      const form = document.getElementById("visitorForm");
-      const messageBox = document.getElementById("message");
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resize);
+      resize();
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        messageBox.textContent = "";
-        messageBox.className = "msg";
-
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const age = document.getElementById("age").value.trim();
-
-        if (!name || !email || !age) {
-          messageBox.textContent = "Please fill all details.";
-          messageBox.classList.add("error");
-          return;
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.vy = Math.random() * 0.5 + 0.3;
+          this.size = Math.random() * 2 + 1;
+          this.op = Math.random() * 0.5 + 0.2;
         }
-
-        localStorage.setItem(
-          "mbtiUser",
-          JSON.stringify({ name, email, age: Number(age) })
-        );
-
-        const visitorData = {
-          name,
-          email,
-          age: Number(age),
-          userAgent: navigator.userAgent,
-          platform: navigator.platform,
-        };
-
-        try {
-          const res = await fetch(`${API_BASE}/api/visitors`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(visitorData),
-          });
-
-          if (!res.ok) throw new Error("Failed to store data");
-
-          messageBox.textContent = "Saved ✅ Redirecting...";
-          messageBox.classList.add("ok");
-
-          document.body.classList.add("fade-out");
-          setTimeout(() => (window.location.href = "test.html"), 500);
-        } catch (err) {
-          console.error(err);
-          messageBox.textContent =
-            "Backend not running / error storing data. Please try again.";
-          messageBox.classList.add("error");
+        update() {
+          this.y += this.vy;
+          this.x += Math.sin(this.y * 0.01) * 0.3;
+          if (this.y > canvas.height) {
+            this.y = -10;
+            this.x = Math.random() * canvas.width;
+          }
         }
-      });
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${this.op})`;
+          ctx.fill();
+        }
+      }
+
+      // create particles
+      for (let i = 0; i < 100; i++) particles.push(new Particle());
+
+      // animate
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p) => {
+          p.update();
+          p.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
     </script>
 
   </body>
