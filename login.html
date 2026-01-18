@@ -1,160 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KnowThySelf | Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KnowThySelf | Login</title>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root {
-      --bg-dark:#00050a;
-      --highlight:#00f2ff;
-      --text-main:#ffffff;
-      --text-muted:#8ba4b6;
-      --glass-bg:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
-      --glass-border:rgba(255,255,255,.08);
-    }
+<style>
+:root {
+  --bg-dark:#00050a;
+  --highlight:#00f2ff;
+  --text-main:#ffffff;
+  --text-muted:#8ba4b6;
+  --glass-bg:linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  --glass-border:rgba(255,255,255,.12);
+  --glass-shine:rgba(255,255,255,.28);
+}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+* {box-sizing:border-box;margin:0;padding:0}
 
-    body {
-      font-family: "Rajdhani", sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:var(--bg-dark);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  color:var(--text-main);
+}
 
-    .card {
-      width: 95%;
-      max-width: 520px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(25px);
-      border: 1px solid var(--glass-border);
-      border-radius: 26px;
-      padding: 36px;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-    }
+/* CARD */
+.card{
+  width:95%;
+  max-width:520px;
+  padding:40px 35px;
+  backdrop-filter:blur(30px);
+  background:var(--glass-bg);
+  border-radius:28px;
+  border:1px solid var(--glass-border);
+  box-shadow:0 20px 60px rgba(0,0,0,0.7);
+}
 
-    h1 {
-      color: var(--highlight);
-      text-align: center;
-      margin-bottom: 10px;
-      letter-spacing: 3px;
-    }
+/* TITLE */
+.card h1{
+  text-align:center;
+  color:var(--highlight);
+  font-size:2rem;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  text-shadow:0 0 20px rgba(0,242,255,0.5);
+}
 
-    p {
-      text-align: center;
-      color: var(--text-muted);
-      margin-bottom: 26px;
-    }
+.card p{
+  text-align:center;
+  color:var(--text-muted);
+  margin-bottom:25px;
+}
 
-    label {
-      display: block;
-      margin-top: 18px;
-      margin-bottom: 6px;
-      letter-spacing: 1px;
-      font-weight: 600;
-    }
+/* LABELS */
+label{
+  font-size:1rem;
+  margin-bottom:6px;
+  display:block;
+  font-weight:600;
+  color:var(--text-muted);
+}
 
-    input {
-      width: 100%;
-      padding: 14px 18px;
-      border-radius: 14px;
-      border: none;
-      outline: none;
-      font-size: 1rem;
-    }
+/* INPUTS */
+input{
+  width:100%;
+  padding:15px;
+  margin-bottom:20px;
+  border-radius:12px;
+  border:none;
+  outline:none;
+  font-size:1.1rem;
+  background:#fff;
+}
 
-    button {
-      width: 100%;
-      margin-top: 28px;
-      padding: 16px;
-      border-radius: 30px;
-      border: none;
-      background: var(--highlight);
-      color: #000;
-      font-weight: 800;
-      letter-spacing: 3px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+/* BUTTON */
+button{
+  width:100%;
+  padding:18px;
+  background:var(--highlight);
+  color:#000;
+  border:none;
+  border-radius:12px;
+  font-weight:800;
+  letter-spacing:3px;
+  cursor:pointer;
+  font-size:1.2rem;
+  box-shadow:0 0 25px rgba(0,242,255,0.4);
+  transition:0.2s;
+}
 
-    button:hover {
-      box-shadow: 0 0 35px rgba(0,242,255,0.6);
-      transform: translateY(-2px);
-    }
+button:hover{
+  background:#7ff8ff;
+  box-shadow:0 0 40px rgba(0,242,255,0.7);
+  transform:translateY(-2px);
+}
 
-    .error {
-      margin-top: 14px;
-      text-align: center;
-      color: #ff4d4d;
-      font-weight: 600;
-      min-height: 20px;
-    }
-  </style>
+/* ERROR TEXT */
+#errorMsg{
+  margin-top:12px;
+  text-align:center;
+  color:#ff4f4f;
+  font-weight:700;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="card">
-    <h1>LOGIN / REGISTER</h1>
-    <p>Proceed to MBTI test sequence.</p>
+<div class="card">
 
-    <form id="loginForm">
-      <label>Full Name</label>
-      <input type="text" id="name" required />
+  <h1>LOGIN / REGISTER</h1>
+  <p>Proceed to MBTI test sequence.</p>
 
-      <label>Email</label>
-      <input type="email" id="email" required />
+  <label>Full Name</label>
+  <input type="text" id="name" placeholder="Enter your name">
 
-      <label>Age</label>
-      <input type="number" id="age" min="10" max="100" required />
+  <label>Email</label>
+  <input type="email" id="email" placeholder="Enter your email">
 
-      <button type="submit">CONTINUE →</button>
-    </form>
+  <label>Age</label>
+  <input type="number" id="age" placeholder="Enter your age">
 
-    <div class="error" id="errorMsg"></div>
-  </div>
+  <button onclick="submitForm()">CONTINUE →</button>
 
-  <script>
-    const API_BASE =
-      (location.hostname === "localhost" || location.hostname === "127.0.0.1")
-        ? "http://localhost:5000"
-        : "https://mbti-backend-main.vercel.app";
+  <div id="errorMsg"></div>
 
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+</div>
 
-      const data = {
-        name: document.getElementById("name").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        age: document.getElementById("age").value
-      };
+<script>
+/* AUTO-DETECT ENVIRONMENT */
+const API_BASE =
+  (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? "http://localhost:5000"
+    : "https://mbti-backend-main.vercel.app";
 
-      try {
-        const res = await fetch(`${API_BASE}/api/visitors`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
+/* SUBMIT */
+async function submitForm(){
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const age = document.getElementById("age").value.trim();
+  const errorMsg = document.getElementById("errorMsg");
 
-        if (!res.ok) throw new Error("Request failed");
+  if(!name || !email || !age){
+    errorMsg.innerText = "All fields are required.";
+    return;
+  }
 
-        window.location.href = "test.html";
-      } catch {
-        document.getElementById("errorMsg").innerText =
-          "Backend not running / error storing data. Please try again.";
-      }
+  try{
+    const res = await fetch(`${API_BASE}/api/visitors`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, age })
     });
-  </script>
+
+    if(!res.ok) throw new Error();
+
+    window.location.href = "test.html";
+
+  } catch(err){
+    errorMsg.innerText = "Backend not running / error storing data.";
+  }
+}
+</script>
 
 </body>
 </html>
