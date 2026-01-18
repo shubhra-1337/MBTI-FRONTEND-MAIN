@@ -121,7 +121,7 @@ document.getElementById("displayType").innerText=result;
 const API_BASE =
   (location.hostname === "localhost" || location.hostname === "127.0.0.1")
     ? "http://localhost:5000/mbti"
-    : "https://mbti-backend-main.vercel.app/api/mbti";
+    : "https://mbti-backend-main.vercel.app/mbti";
 
 if(!result){
  container.innerHTML="<p>No data found.</p>";
@@ -135,10 +135,21 @@ if(!result){
  })
  .then(d=>{
   container.innerHTML=`
-   <div class="category-card"><h2>Sonic Resonance (Music)</h2><ul>${(d.songs||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
-   <div class="category-card"><h2>Knowledge Archives (Books)</h2><ul>${(d.books||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
-   <div class="category-card"><h2>Career Pathways</h2><ul>${(d.careers||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
-   <div class="category-card"><h2>Visual Media (Movies)</h2><ul>${(d.movies||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+   <div class="category-card"><h2>Sonic Resonance (Music)</h2>
+     <ul>${(d.songs||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
+   </div>
+
+   <div class="category-card"><h2>Knowledge Archives (Books)</h2>
+     <ul>${(d.books||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
+   </div>
+
+   <div class="category-card"><h2>Career Pathways</h2>
+     <ul>${(d.careers||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
+   </div>
+
+   <div class="category-card"><h2>Visual Media (Movies)</h2>
+     <ul>${(d.movies||[]).map(i=>`<li>${i}</li>`).join("")}</ul>
+   </div>
   `;
  })
  .catch(()=>{
