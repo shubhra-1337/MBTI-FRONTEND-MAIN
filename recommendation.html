@@ -71,7 +71,7 @@ li:hover{
 <div id="recommendationContent"></div>
 
 <script>
-/* ⭐ PARTICLE FIX */
+/* ⭐ PARTICLES */
 const canvas=document.getElementById("particleCanvas");
 const ctx=canvas.getContext("2d");
 
@@ -112,27 +112,23 @@ for(let i=0;i<100;i++)particles.push(new Particle());
  requestAnimationFrame(animate);
 })();
 
-/* ⭐ MBTI LOGIC FIXED */
+/* ⭐ MBTI LOGIC */
 const result=localStorage.getItem("mbtiResult");
 const container=document.getElementById("recommendationContent");
 document.getElementById("displayType").innerText=result;
 
-/* 
-⭐⭐⭐ IMPORTANT ⭐⭐⭐  
-Railway gives HTTPS.  
-NO port needed, even though server logs show 8080.
-*/
+/* ⭐ BACKEND API – FULLY FIXED */
 const API_BASE =
   (location.hostname === "localhost" || location.hostname === "127.0.0.1")
-    ? "http://localhost:5000"
-    : "https://mbti-backend-main.vercel.app";
+    ? "http://localhost:5000/mbti"
+    : "https://mbti-backend-main.vercel.app/api/mbti";
 
 if(!result){
  container.innerHTML="<p>No data found.</p>";
 }else{
  container.innerHTML=`<div class="loading-wrapper">Fetching data for ${result}...</div>`;
 
- fetch(`${API_BASE}/mbti/${result}`)
+ fetch(`${API_BASE}/${result}`)
  .then(r=>{
    if(!r.ok)throw Error("Failed");
    return r.json();
@@ -153,4 +149,5 @@ if(!result){
 
 </body>
 </html>
+
 
