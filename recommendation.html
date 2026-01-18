@@ -176,11 +176,11 @@ if(!result){
   container.innerHTML =
     `<div class="loading-wrapper">Fetching recommendations for ${result}...</div>`;
 
-  fetch(`${API_BASE}/${result}`)
-    .then(res => {
-      if(!res.ok) throw new Error("Fetch failed");
-      return res.json();
-    })
+ fetch("https://mbti-backend-main.vercel.app/api/visitors", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(visitorData)
+   });
     .then(data => {
       container.innerHTML = `
         <div class="category-card">
